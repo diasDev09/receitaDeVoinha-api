@@ -92,7 +92,3 @@ Nenhuma senha ou segredo fica no repositório.
 - Banco H2 em memória: os dados não persistem entre execuções.
 - Ainda **não implementados**: login e cadastro de usuário com JWT (Spring Security), `POST /api/receitas` e favoritos por usuário. Hoje todos os endpoints são públicos e só de leitura.
 - Sem testes automatizados nesta etapa; a verificação foi manual com `curl` e pelo front.
-
-## Uso de IA
-
-Foi usado o assistente Claude (Anthropic) para gerar a base do projeto (entidades, repositórios, serviços, controladores, tratamento de erros, `data.sql`) e este README. O autor executou, testou e revisou o resultado, e é responsável por todo o conteúdo entregue.
