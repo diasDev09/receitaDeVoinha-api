@@ -43,6 +43,11 @@ public class Receita {
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
+    /** Quem cadastrou. So o autor pode excluir a receita. */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "autor_id")
+    private Usuario autor;
+
     @ElementCollection
     @CollectionTable(name = "receita_ingredientes", joinColumns = @JoinColumn(name = "receita_id"))
     @OrderColumn(name = "posicao")
@@ -57,6 +62,20 @@ public class Receita {
 
     protected Receita() {
         // exigido pelo JPA
+    }
+
+    /** Receita nova cadastrada pelo front: comeca sem avaliacao (nota 0). */
+    public Receita(String titulo, String descricao, String imagem, String tempo,
+            Categoria categoria, Usuario autor, List<String> ingredientes, List<String> preparo) {
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.imagem = imagem;
+        this.nota = 0;
+        this.tempo = tempo;
+        this.categoria = categoria;
+        this.autor = autor;
+        this.ingredientes = new ArrayList<>(ingredientes);
+        this.preparo = new ArrayList<>(preparo);
     }
 
     public Long getId() {
@@ -85,6 +104,10 @@ public class Receita {
 
     public Categoria getCategoria() {
         return categoria;
+    }
+
+    public Usuario getAutor() {
+        return autor;
     }
 
     public List<String> getIngredientes() {

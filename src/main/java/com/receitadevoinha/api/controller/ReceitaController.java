@@ -1,11 +1,21 @@
 package com.receitadevoinha.api.controller;
 
+import com.receitadevoinha.api.auth.AuthInterceptor;
+import com.receitadevoinha.api.auth.RequerLogin;
+import com.receitadevoinha.api.dto.ReceitaRequest;
 import com.receitadevoinha.api.dto.ReceitaResponse;
 import com.receitadevoinha.api.service.ReceitaService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,15 +30,33 @@ public class ReceitaController {
         this.service = service;
     }
 
-    @GetMapping // GET /api/receitas?busca=queijo&categoria=Massas
+    @GetMapping // GET /api/receitas?busca=queijo&categoria=Massas (publico)
     public List<ReceitaResponse> listar(
             @RequestParam(required = false) String busca,
             @RequestParam(required = false) String categoria) {
         return service.listar(busca, categoria);
     }
 
-    @GetMapping("/{id}") // GET /api/receitas/1
+    @GetMapping("/{id}") // GET /api/receitas/1 (publico)
     public ReceitaResponse detalhar(@PathVariable Long id) {
         return service.buscarPorId(id);
+    }
+
+    @RequerLogin
+    @PostMapping // POST /api/receitas (logado)
+    @ResponseStatus(HttpStatus.CREATED)
+    public ReceitaResponse criar(
+            @Valid @RequestBody ReceitaRequest dados,
+            @RequestAttribute(AuthInterceptor.ATRIBUTO_USUARIO) Long usuarioId) {
+        return service.criar(dados, usuarioId);
+    }
+
+    @RequerLogin
+    @DeleteMapping("/{id}") // DELETE /api/receitas/10 (logado e autor)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void excluir(
+            @PathVariable Long id,
+            @RequestAttribute(AuthInterceptor.ATRIBUTO_USUARIO) Long usuarioId) {
+        service.excluir(id, usuarioId);
     }
 }

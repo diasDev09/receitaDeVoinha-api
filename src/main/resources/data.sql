@@ -116,3 +116,12 @@ INSERT INTO receita_preparo (receita_id, posicao, passo) VALUES (9, 3, 'Faça bo
 INSERT INTO receita_preparo (receita_id, posicao, passo) VALUES (9, 4, 'Asse a 200 °C por 25 minutos, até dourar.');
 ALTER TABLE categorias ALTER COLUMN id RESTART WITH 7;
 ALTER TABLE receitas ALTER COLUMN id RESTART WITH 10;
+
+-- Usuários de demonstração (AV2). Só o hash BCrypt é guardado; as senhas de
+-- demonstração estão no README e na tela de login: voinha/voinha123 e neto/neto123.
+INSERT INTO usuarios (id, nome, login, senha_hash) VALUES (1, 'Dona Voinha', 'voinha', '$2a$10$gZ6jaN3knL7c6iqOuRl0fuYNkOv2rxV3HIBG3rJ5veZHd.PuvvY2W');
+INSERT INTO usuarios (id, nome, login, senha_hash) VALUES (2, 'Neto Curioso', 'neto', '$2a$10$ZHn4eKAm6ZC2hBwVQiizG.dLNehRvYEZdWGACPvoTjQ0MZiwI2gCS');
+ALTER TABLE usuarios ALTER COLUMN id RESTART WITH 3;
+
+-- As receitas iniciais são da Voinha: só ela pode excluí-las (o Neto recebe 403).
+UPDATE receitas SET autor_id = 1;
