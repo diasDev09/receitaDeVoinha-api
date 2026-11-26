@@ -39,6 +39,22 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-crypto</artifactId>
         </dependency>
+        <!-- Migrações versionadas: criam as tabelas e os dados iniciais uma única vez -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-flyway</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+        </dependency>
+        <!-- PostgreSQL do Supabase (quando DB_URL estiver configurada) -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- H2 em memória: padrão para rodar sem configurar nada (e contingência) -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
