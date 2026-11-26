@@ -42,6 +42,13 @@ public class Usuario {
         // exigido pelo JPA
     }
 
+    /** Usuário novo vindo do cadastro. Recebe o hash, nunca a senha. */
+    public Usuario(String nome, String login, String senhaHash) {
+        this.nome = nome;
+        this.login = login;
+        this.senhaHash = senhaHash;
+    }
+
     public Long getId() {
         return id;
     }

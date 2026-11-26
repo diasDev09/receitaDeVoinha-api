@@ -69,8 +69,10 @@ public class ReceitaService {
                 dados.time().trim(),
                 categoria,
                 autor,
-                dados.ingredients().stream().map(String::trim).toList(),
-                dados.preparation().stream().map(String::trim).toList());
+                // lambda em vez de String::trim: evita o aviso de "null type safety" do VS Code
+                // (os itens nunca são nulos: @NotBlank em cada elemento do ReceitaRequest)
+                dados.ingredients().stream().map(item -> item.trim()).toList(),
+                dados.preparation().stream().map(passo -> passo.trim()).toList());
 
         return ReceitaResponse.from(repo.save(receita));
     }

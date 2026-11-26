@@ -59,6 +59,7 @@ curl http://localhost:8080/api/favoritos -H "Authorization: Bearer <token>"
 ## Autenticação
 
 - `POST /api/auth/login` confere a senha com BCrypt e devolve um **token opaco** aleatório (256 bits), guardado na memória da API com validade de 8 horas (`app.sessao.horas`).
+- `POST /api/auth/cadastro` cria a conta: valida nome, usuário (3 a 40 caracteres, sem espaços, guardado em minúsculas e único) e senha (6 a 72), grava só o hash BCrypt e já devolve um token.
 - Os endpoints protegidos estão marcados com `@RequerLogin`. O `AuthInterceptor` lê `Authorization: Bearer <token>` e, sem sessão válida, responde **401** antes de chegar ao controller.
 - Regras de permissão ficam no serviço: excluir receita de outra pessoa responde **403**.
 - `POST /api/auth/logout` invalida o token no servidor.
@@ -69,6 +70,7 @@ curl http://localhost:8080/api/favoritos -H "Authorization: Bearer <token>"
 | Método e caminho | Acesso | Resposta |
 | --- | --- | --- |
 | `POST /api/auth/login` | Público | 200 `{ token, user }`; 401 usuário/senha errados; 400 campo vazio |
+| `POST /api/auth/cadastro` | Público | 201 `{ token, user }` (já entra logado); 400 com `fields`; 409 se o nome de usuário já existe |
 | `GET /api/auth/me` | Token | 200 `{ id, name, username }`; 401 |
 | `POST /api/auth/logout` | Token | 204; 401 |
 | `GET /api/receitas?busca=&categoria=` | Público | 200 com a lista (busca sem acento e sem diferença de maiúsculas em nome, descrição e ingredientes) |
@@ -184,6 +186,6 @@ Nenhuma senha em texto, token ou segredo fica no repositório.
 - Sem `.env`, a API usa o H2 em memória: receitas cadastradas e favoritos não persistem entre execuções. Com o Supabase, persistem.
 - Sessões (tokens) ficam na memória da API: ao reiniciar, todos precisam entrar de novo, mesmo com o Supabase.
 - O plano gratuito do Supabase pausa o projeto depois de uma semana sem uso; é só reativá-lo no painel.
-- Sem cadastro de usuários e sem edição de receita.
+- Sem edição de receita, sem perfis diferentes (como administrador) e sem recuperação de senha.
 - Sessões em memória: não servem para mais de uma instância da API.
 - Sem testes automatizados; a verificação foi feita com `curl` (login, 400/401/403/404/405, cadastro, favoritos, exclusão e logout) e pelo front.

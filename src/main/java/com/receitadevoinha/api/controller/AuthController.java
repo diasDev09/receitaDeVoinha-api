@@ -2,6 +2,7 @@ package com.receitadevoinha.api.controller;
 
 import com.receitadevoinha.api.auth.AuthInterceptor;
 import com.receitadevoinha.api.auth.RequerLogin;
+import com.receitadevoinha.api.dto.CadastroRequest;
 import com.receitadevoinha.api.dto.LoginRequest;
 import com.receitadevoinha.api.dto.LoginResponse;
 import com.receitadevoinha.api.dto.UsuarioResponse;
@@ -29,6 +30,12 @@ public class AuthController {
     @PostMapping("/login") // 200 com token; 401 se usuario/senha errados; 400 se faltar campo
     public LoginResponse login(@Valid @RequestBody LoginRequest dados) {
         return service.login(dados);
+    }
+
+    @PostMapping("/cadastro") // 201 com token (já entra logado); 400 por campo; 409 se o usuário existe
+    @ResponseStatus(HttpStatus.CREATED)
+    public LoginResponse cadastrar(@Valid @RequestBody CadastroRequest dados) {
+        return service.cadastrar(dados);
     }
 
     @RequerLogin

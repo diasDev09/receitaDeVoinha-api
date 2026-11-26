@@ -12,6 +12,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Optional<Usuario> findByLogin(String login);
 
+    boolean existsByLogin(String login);
+
     /** Tira a receita dos favoritos de todos antes de exclui-la (chave estrangeira). */
     @Modifying
     // {h-schema} vira "voinha." (consulta nativa não recebe o schema padrão sozinha)
