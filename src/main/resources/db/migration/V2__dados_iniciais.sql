@@ -1,4 +1,5 @@
--- Gerado a partir de recipes.js e categories.js da AV1 (receitaDeVoinha).
+-- V2: dados iniciais da AV1 (receitas e categorias) e usuários de demonstração.
+-- Roda uma única vez por banco (o Flyway registra em flyway_schema_history).
 INSERT INTO categorias (id, nome, icone) VALUES (1, 'Carnes', '🥩');
 INSERT INTO categorias (id, nome, icone) VALUES (2, 'Massas', '🍝');
 INSERT INTO categorias (id, nome, icone) VALUES (3, 'Sobremesas', '🍮');
